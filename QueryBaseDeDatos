@@ -4,7 +4,7 @@ select * from eventos;
 -- Actividades evaluativas (Listo)
 select mat_codigo, gru_codigo, epg_fecha_evaluativa, epg_porcentaje_numeric, epg_descripcion from art_evaluaciones_programadas; 
 
--- Ver últimas notas agregadas (NO)
+-- Ver últimas notas agregadas (Listo)
 SELECT ART_Evaluaciones_Programadas.mat_codigo, ART_Evaluaciones_Programadas.epg_descripcion, ART_Evaluaciones_Programadas.epg_porcentaje_numeric, ART_Notas_Parciales.npa_nota_numerica
 FROM ART_Evaluaciones_Programadas
 INNER JOIN ART_Notas_Parciales
