@@ -1,0 +1,388 @@
+-- Eventos que se realizarán (Listo)
+select * from eventos;
+
+-- Actividades evaluativas (Listo)
+select mat_codigo, gru_codigo, epg_fecha_evaluativa, epg_porcentaje_numeric, epg_descripcion from art_evaluaciones_programadas; 
+
+-- Ver últimas notas agregadas (NO)
+SELECT ART_Evaluaciones_Programadas.mat_codigo, ART_Evaluaciones_Programadas.epg_descripcion, ART_Evaluaciones_Programadas.epg_porcentaje_numeric, ART_Notas_Parciales.npa_nota_numerica
+FROM ART_Evaluaciones_Programadas
+INNER JOIN ART_Notas_Parciales
+ON ART_Notas_Parciales.egp_consecutivo = ART_Evaluaciones_Programadas.egp_consecutivo
+
+INNER JOIN ART_Materia
+ON ART_Evaluaciones_Programadas.mat_codigo = ART_Materia.mat_codigo
+
+INNER JOIN ART_Materia_has_ART_Estudiante
+ON ART_Materia.mat_codigo = ART_Materia_has_ART_Estudiante.ART_Materia_mat_codigo
+
+INNER JOIN ART_Estudiante
+ON ART_Materia_has_ART_Estudiante.ART_Estudiante_est_codigo = ART_Estudiante.est_codigo;
+
+-- notas acumuladas (Listo)
+SELECT ART_Materia_has_ART_Estudiante.ART_Estudiante_est_codigo, ART_Notas_Parciales_Acum.npa_porcentaje, ART_Notas_Parciales_Acum.npa_nota_numerica 
+FROM ART_Notas_Parciales_Acum 
+JOIN ART_Materia_has_ART_Estudiante
+ON ART_Materia_has_ART_Estudiante.ART_Estudiante_est_codigo = ART_Notas_Parciales_Acum.est_cod;
+
+
+-- De acá hacia abajo________________________________________________________________________________________________________________
+
+
+-- -----------------------------------------------------
+-- Table `Seedling`.`ART_Materia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS ART_Materia(
+  mat_codigo VARCHAR(6) NOT NULL PRIMARY KEY ,
+  mat_nombre VARCHAR(90) NULL);
+INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('DF0239', 'FÍSICA II');
+INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('OG0276', 'INGENIERÍA ECONÓMICA');
+INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('ST0254', 'ORGANIZACIÓN DE COMPUTADORES');
+INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('ST0253', 'PENSAMIENTO SISTÉMICO');
+INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('ST0252', 'SISTEMAS DE INFORMACIÓN');
+INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('ID0069', 'CÁLCULO II');
+INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('IF0004', 'FUNDAMENTOS DE PROGRAMACIÓN');
+
+SELECT * FROM ART_Materia;
+
+
+
+-- -----------------------------------------------------
+-- Table `Seedling`.`ART_Evaluaciones_Programadas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS ART_Evaluaciones_Programadas (
+  egp_consecutivo INT NOT NULL PRIMARY KEY,
+  gru_semestre VARCHAR(5) NULL,
+  mat_codigo VARCHAR(6) NULL,
+  gru_codigo VARCHAR(3) NULL,
+  tev_consecutivo INT NULL,
+  epg_descripcion VARCHAR(120) NULL,
+  epg_fecha_evaluativa TIMESTAMP NULL,
+  epg_porcentaje_numeric DECIMAL NULL,
+  cli_tipodcto_profesor VARCHAR(2) NULL,
+  cli_numdcto_profesor VARCHAR(12) NULL,
+  egp_consecutivo_padre INT NULL,
+  epg_grupo_union VARCHAR(1) NOT NULL DEFAULT 'N',
+	FOREIGN KEY (mat_codigo) REFERENCES ART_Materia (mat_codigo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+	
+	
+INSERT INTO ART_Evaluaciones_Programadas (egp_consecutivo,
+  gru_semestre,
+  mat_codigo,
+  gru_codigo,
+  tev_consecutivo,
+  epg_descripcion,
+  epg_fecha_evaluativa,
+  epg_porcentaje_numeric,
+  cli_tipodcto_profesor,
+  cli_numdcto_profesor,
+  egp_consecutivo_padre,
+  epg_grupo_union) VALUES (241, '20111', 'ID0069', '505', 1, 'Quiz No.1', '22/02/2011  12:00:00', 8.75, 'CC', '98558896', 238, 'N');
+	
+	
+-- INSERT INTO ART_Evaluaciones_Programadas (egp_consecutivo,
+--   gru_semestre,
+--   mat_codigo,
+--   gru_codigo,
+--   tev_consecutivo,
+--   epg_descripcion,
+--   epg_fecha_evaluativa,
+--   epg_porcentaje_numeric,
+--   cli_tipodcto_profesor,
+--   cli_numdcto_profesor,
+--   egp_consecutivo_padre,
+--   epg_grupo_union,
+--   ART_Materia_mat_codigo,
+--   ART_Notas_Parciales_npa_consecutivo) VALUES (241, '20111', 'ID0069', '505', 1, 'Quiz No.1', '22/02/2011  12:00:00', 8.75, 'CC', '98558896', 238, 'N', 'DF0239', 1);
+
+INSERT INTO ART_Evaluaciones_Programadas (egp_consecutivo,
+  gru_semestre,
+  mat_codigo,
+  gru_codigo,
+  tev_consecutivo,
+  epg_descripcion,
+  epg_fecha_evaluativa,
+  epg_porcentaje_numeric,
+  cli_tipodcto_profesor,
+  cli_numdcto_profesor,
+  egp_consecutivo_padre,
+  epg_grupo_union) VALUES (270, '20111', 'IF0004', '1', 1, 'Quiz No.1', '22/02/2011  12:00:00', 8.75, 'CC', '98558896', 238, 'N');
+
+
+SELECT * FROM ART_Evaluaciones_Programadas;
+
+
+-- -----------------------------------------------------
+-- Table `Seedling`.`ART_Notas_Parciales`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS ART_Notas_Parciales (
+  npa_consecutivo serial PRIMARY KEY,
+  egp_consecutivo INT NULL,
+  est_codigo VARCHAR(12) NULL,
+  npa_nota_cualitativa VARCHAR(5) NULL,
+  npa_nota_numerica INT NULL,
+  epg_fecha_nota DATE NULL,
+	FOREIGN KEY (egp_consecutivo) REFERENCES ART_Evaluaciones_Programadas (egp_consecutivo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+INSERT INTO ART_Notas_Parciales (egp_consecutivo,
+								 est_codigo,
+								 npa_nota_cualitativa,
+								 npa_nota_numerica,
+								 epg_fecha_nota)
+								 VALUES (241, '201110001301', '35', 35, current_date);
+INSERT INTO ART_Notas_Parciales (egp_consecutivo, est_codigo, npa_nota_cualitativa, npa_nota_numerica, epg_fecha_nota) VALUES (241, '201110028301', '20', 20, current_date);
+INSERT INTO ART_Notas_Parciales (egp_consecutivo, est_codigo, npa_nota_cualitativa, npa_nota_numerica, epg_fecha_nota) VALUES (241, '201110013301', '35', 35, current_date);
+INSERT INTO ART_Notas_Parciales (egp_consecutivo, est_codigo, npa_nota_cualitativa, npa_nota_numerica, epg_fecha_nota) VALUES (241, '201810040010', '40', 40, current_date);
+
+SELECT * FROM ART_Notas_Parciales;
+
+
+-- -----------------------------------------------------
+-- Table `Seedling`.`ART_Notas_Parciales_Acum`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS ART_Notas_Parciales_Acum (
+  est_cod VARCHAR(12) NOT NULL PRIMARY KEY,
+  mat_codigo VARCHAR(6) NULL,
+  gru_codigo VARCHAR(3) NULL,
+  gru_semestre VARCHAR(5) NULL,
+  npa_nota_numerica INT NULL DEFAULT 0,
+  npa_nota_cualitativa VARCHAR(5) NULL,
+  npa_porcentaje DECIMAL NULL,
+  npa_confirmado VARCHAR(1) NULL DEFAULT 'N',
+	FOREIGN KEY (mat_codigo) REFERENCES ART_Materia (mat_codigo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201110001301', 'ID0069', '505', '20111', 27, '26.98', 100, 'S');
+  
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201810040010', 'ID0069', '505', '20111', 40, '39.98', 100, 'S');
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201110028301', 'ID0069', '505', '20111', 36, '36.07', 100, 'S');
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201110013301', 'ID0069', '505', '20111', 31, '30.92', 100, 'S');
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201110023301', 'ID0069', '505', '20111', 31, '30.52', 100, 'S');
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201110006301', 'ID0069', '505', '20111', 36, '35.68', 100, 'S');
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('200910017301', 'ID0069', '505', '20111', 29, '28.7', 100, 'S');
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201122000302', 'ID0069', '505', '20111', 30, '30.33', 100, 'S');
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201110009301', 'ID0069', '505', '20111', 34, '33.65', 100, 'S');
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201110020301', 'ID0069', '505', '20111', 36, '36.28', 100, 'S');
+
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201110016302', 'IF0004', '1', '20111', 16, '15.58', 100, 'S');
+
+
+SELECT * FROM ART_Notas_Parciales_Acum;
+
+
+-- -----------------------------------------------------
+-- Table `Seedling`.`ART_Estudiante`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS ART_Estudiante (
+  est_codigo VARCHAR(12) NOT NULL PRIMARY KEY,
+  cli_tipodcto VARCHAR(2) NULL,
+  cli_numdcto VARCHAR(12) NULL,
+  cli_nombre_completo VARCHAR(90) NULL);
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201110046704', 'CC',  '1017134564', 'VALERIA SUÁREZ MEJÍA');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('200510001101', 'CC',  '1017158208', 'SANTIAGO MORENO RAVE');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201010006101', 'CC',  '1017166091', 'ISABEL GRACIANO VAZQUEZ');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201010008101', 'CC',  '1017174672', 'CAMILA BARONA CABRERA');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201010040201', 'CC',  '1017194728', 'MARIANA GÓMEZ RAMÍREZ');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201110033201', 'CC',  '1017217958', 'ANGIE MAZO BOTERO');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201110094201', 'CC',  '1017223530', 'ESTEFANÍA GÓMEZ ROMERO');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201224099101', 'CC',  '1020437727', 'CÉSAR GARCÍA GARCÍA');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201113092101', 'CC',  '1020437727', 'ROBERTO GONZÁLEZ SUÁREZ');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('200910361101', 'CC',  '1020448185', 'KEVIN MUÑOZ VÉLEZ');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201810040010', 'CC',  '1020448185', 'DANIEL SUÁREZ MEJÍA');
+
+SELECT * FROM ART_Estudiante;
+
+
+-- -----------------------------------------------------
+-- Table `Seedling`.`Extracurriculares`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS Extracurriculares (
+  consecutivo serial PRIMARY KEY,
+  representante_estu BOOLEAN DEFAULT FALSE,
+  deportista BOOLEAN DEFAULT FALSE,
+  proyeccion_artistica BOOLEAN DEFAULT FALSE,
+  empleado_becado BOOLEAN DEFAULT FALSE,
+  rpte_grupo_estudianitl BOOLEAN DEFAULT FALSE,
+  lider_semillero BOOLEAN DEFAULT FALSE,
+  ART_Estudiante_est_codigo VARCHAR(12) NOT NULL,
+	FOREIGN KEY (ART_Estudiante_est_codigo) REFERENCES ART_Estudiante (est_codigo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201010006101');
+INSERT INTO Extracurriculares(empleado_becado, ART_Estudiante_est_codigo) VALUES (TRUE, '201110094201');
+INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201010040201');
+INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '200910361101');
+INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '200510001101');
+INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201224099101');
+INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201010040201');
+INSERT INTO Extracurriculares(ART_Estudiante_est_codigo) VALUES ('201010040201');
+
+SELECT * FROM Extracurriculares;
+
+-- -----------------------------------------------------
+-- Table `Seedling`.`ART_Materia_has_ART_Estudiante`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS ART_Materia_has_ART_Estudiante (
+  ART_Materia_mat_codigo VARCHAR(6) NOT NULL PRIMARY KEY,
+  ART_Estudiante_est_codigo VARCHAR(12) NOT NULL,
+	FOREIGN KEY (ART_Materia_mat_codigo) REFERENCES ART_Materia (mat_codigo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+	FOREIGN KEY (ART_Estudiante_est_codigo) REFERENCES ART_Estudiante (est_codigo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('ID0069', '201810040010');
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('IF0004', '201010040201');
+
+SELECT * FROM ART_Materia_has_ART_Estudiante;
+
+-- -----------------------------------------------------
+-- Table `Seedling`.`Eventos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS Eventos (
+  consecutivo serial PRIMARY KEY,
+  nombre_eventos VARCHAR(45) NULL,
+  fecha_evento DATE NULL,
+  lugar_evento VARCHAR(45) NULL,
+  hora_evento VARCHAR(45) NULL,
+  carrera_evento VARCHAR(45) NULL DEFAULT 'GENERAL',
+  duracion_evento VARCHAR(45) NULL,
+  ART_Estudiante_est_codigo VARCHAR(12) NOT NULL,
+	FOREIGN KEY (ART_Estudiante_est_codigo) REFERENCES ART_Estudiante (est_codigo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+	
+INSERT INTO Eventos (nombre_eventos,
+fecha_evento,
+lugar_evento,
+hora_evento,
+carrera_evento,
+duracion_evento,
+ART_Estudiante_est_codigo) VALUES ('CHARLA BIG DATA', '17/03/2020', 'AUDITORIO FUNDADORES', '3:00 PM', 'INGENIERÍA DE SISTEMAS', '2 HORAS', '201010040201');
+
+INSERT INTO Eventos (nombre_eventos,
+fecha_evento,
+lugar_evento,
+hora_evento,
+carrera_evento,
+duracion_evento,
+ART_Estudiante_est_codigo) VALUES ('CONFERENCIA COMPUTACIÓN CUÁNTICA', '21/03/2020', 'AUDITORIO 38-101', '4:00 PM', 'INGENIERÍA DE SISTEMAS', '1 HORAS', '201010006101');
+
+INSERT INTO Eventos (nombre_eventos,
+fecha_evento,
+lugar_evento,
+hora_evento,
+duracion_evento,
+ART_Estudiante_est_codigo) VALUES ('CHARLA DE EDUCACIÓN SEXUAL', '20/03/2020', 'AUDITORIO FUNDADORES', '2:00 PM', '1 HORAS', '201110094201');
+
+INSERT INTO Eventos (nombre_eventos,
+fecha_evento,
+lugar_evento,
+hora_evento,
+carrera_evento,
+duracion_evento,
+ART_Estudiante_est_codigo) VALUES ('CONFERENCIA FINANZAS PERSONALES', '18/03/2020', 'AUDITORIO 19-501', '5:00 PM', 'FINANZAS', '1 HORAS', '201224099101');
+
+INSERT INTO Eventos (nombre_eventos,
+fecha_evento,
+lugar_evento,
+hora_evento,
+carrera_evento,
+duracion_evento,
+ART_Estudiante_est_codigo) VALUES ('SEMINARIO: INNOVATIVE USES OF DRONES', '17/03/2020', 'AUDITORIO 19-501', '11:00 AM', 'INGENIERÍA DE PRODUCCIÓN', '1 HORAS', '200510001101');
+
+
+SELECT * FROM Eventos;
