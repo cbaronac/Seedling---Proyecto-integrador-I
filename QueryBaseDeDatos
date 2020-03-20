@@ -1,5 +1,5 @@
 -- Eventos que se realizarán (Listo)
-select * from eventos;
+select nombre_eventos,fecha_evento from eventos ORDER BY fecha_evento;
 
 -- Actividades evaluativas (Listo)
 select mat_codigo, gru_codigo, epg_fecha_evaluativa, epg_porcentaje_numeric, epg_descripcion from art_evaluaciones_programadas; 
