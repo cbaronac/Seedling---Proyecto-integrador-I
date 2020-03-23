@@ -40,8 +40,9 @@ INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('OG0276', 'INGENIERÍA 
 INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('ST0254', 'ORGANIZACIÓN DE COMPUTADORES');
 INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('ST0253', 'PENSAMIENTO SISTÉMICO');
 INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('ST0252', 'SISTEMAS DE INFORMACIÓN');
+-- Dos datos de prueba
 INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('ID0069', 'CÁLCULO II');
-INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('IF0004', 'FUNDAMENTOS DE PROGRAMACIÓN');
+INSERT INTO ART_Materia (mat_codigo, mat_nombre) VALUES ('IF0004', 'ECOLOGÍA');
 
 SELECT * FROM ART_Materia;
 
@@ -67,7 +68,8 @@ CREATE TABLE IF NOT EXISTS ART_Evaluaciones_Programadas (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 	
-	
+-- Los dos son datos necesarios para las pruebas
+--CALCULO II
 INSERT INTO ART_Evaluaciones_Programadas (egp_consecutivo,
   gru_semestre,
   mat_codigo,
@@ -81,22 +83,7 @@ INSERT INTO ART_Evaluaciones_Programadas (egp_consecutivo,
   egp_consecutivo_padre,
   epg_grupo_union) VALUES (241, '20111', 'ID0069', '505', 1, 'Quiz No.1', '22/02/2011  12:00:00', 8.75, 'CC', '98558896', 238, 'N');
 	
-	
--- INSERT INTO ART_Evaluaciones_Programadas (egp_consecutivo,
---   gru_semestre,
---   mat_codigo,
---   gru_codigo,
---   tev_consecutivo,
---   epg_descripcion,
---   epg_fecha_evaluativa,
---   epg_porcentaje_numeric,
---   cli_tipodcto_profesor,
---   cli_numdcto_profesor,
---   egp_consecutivo_padre,
---   epg_grupo_union,
---   ART_Materia_mat_codigo,
---   ART_Notas_Parciales_npa_consecutivo) VALUES (241, '20111', 'ID0069', '505', 1, 'Quiz No.1', '22/02/2011  12:00:00', 8.75, 'CC', '98558896', 238, 'N', 'DF0239', 1);
-
+--ECOLOGÍA
 INSERT INTO ART_Evaluaciones_Programadas (egp_consecutivo,
   gru_semestre,
   mat_codigo,
@@ -135,9 +122,25 @@ INSERT INTO ART_Notas_Parciales (egp_consecutivo,
 								 npa_nota_numerica,
 								 epg_fecha_nota)
 								 VALUES (241, '201110001301', '35', 35, current_date);
-INSERT INTO ART_Notas_Parciales (egp_consecutivo, est_codigo, npa_nota_cualitativa, npa_nota_numerica, epg_fecha_nota) VALUES (241, '201110028301', '20', 20, current_date);
-INSERT INTO ART_Notas_Parciales (egp_consecutivo, est_codigo, npa_nota_cualitativa, npa_nota_numerica, epg_fecha_nota) VALUES (241, '201110013301', '35', 35, current_date);
-INSERT INTO ART_Notas_Parciales (egp_consecutivo, est_codigo, npa_nota_cualitativa, npa_nota_numerica, epg_fecha_nota) VALUES (241, '201810040010', '40', 40, current_date);
+INSERT INTO ART_Notas_Parciales (egp_consecutivo,
+								 est_codigo,
+								 npa_nota_cualitativa,
+								 npa_nota_numerica,
+								 epg_fecha_nota)
+								 VALUES (241, '201110028301', '20', 20, current_date);
+INSERT INTO ART_Notas_Parciales (egp_consecutivo,
+								 est_codigo, npa_nota_cualitativa,
+								 npa_nota_numerica,
+								 epg_fecha_nota) 
+								 VALUES (241, '201110013301', '35', 35, current_date);
+								 
+-- Dato de Prueba
+INSERT INTO ART_Notas_Parciales (egp_consecutivo,
+								 est_codigo,
+								 npa_nota_cualitativa,
+								 npa_nota_numerica,
+								 epg_fecha_nota) 
+								 VALUES (241, '201810040010', '40', 40, current_date);
 
 SELECT * FROM ART_Notas_Parciales;
 
@@ -167,15 +170,6 @@ INSERT INTO ART_Notas_Parciales_Acum (est_cod,
   npa_porcentaje,
   npa_confirmado) VALUES ('201110001301', 'ID0069', '505', '20111', 27, '26.98', 100, 'S');
   
-INSERT INTO ART_Notas_Parciales_Acum (est_cod,
-  mat_codigo,
-  gru_codigo,
-  gru_semestre,
-  npa_nota_numerica,
-  npa_nota_cualitativa,
-  npa_porcentaje,
-  npa_confirmado) VALUES ('201810040010', 'ID0069', '505', '20111', 40, '39.98', 100, 'S');
-
 INSERT INTO ART_Notas_Parciales_Acum (est_cod,
   mat_codigo,
   gru_codigo,
@@ -257,6 +251,16 @@ INSERT INTO ART_Notas_Parciales_Acum (est_cod,
   npa_porcentaje,
   npa_confirmado) VALUES ('201110016302', 'IF0004', '1', '20111', 16, '15.58', 100, 'S');
 
+--Dato de Prueba
+INSERT INTO ART_Notas_Parciales_Acum (est_cod,
+  mat_codigo,
+  gru_codigo,
+  gru_semestre,
+  npa_nota_numerica,
+  npa_nota_cualitativa,
+  npa_porcentaje,
+  npa_confirmado) VALUES ('201810040010', 'ID0069', '505', '20111', 40, '39.98', 100, 'S');
+
 
 SELECT * FROM ART_Notas_Parciales_Acum;
 
@@ -269,7 +273,7 @@ CREATE TABLE IF NOT EXISTS ART_Estudiante (
   cli_tipodcto VARCHAR(2) NULL,
   cli_numdcto VARCHAR(12) NULL,
   cli_nombre_completo VARCHAR(90) NULL);
-INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201110046704', 'CC',  '1017134564', 'VALERIA SUÁREZ MEJÍA');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201110046704', 'CC',  '1017134564', 'DANIELA PULGARIN SERNA');
 INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('200510001101', 'CC',  '1017158208', 'SANTIAGO MORENO RAVE');
 INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201010006101', 'CC',  '1017166091', 'ISABEL GRACIANO VAZQUEZ');
 INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201010008101', 'CC',  '1017174672', 'CAMILA BARONA CABRERA');
@@ -279,7 +283,8 @@ INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_co
 INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201224099101', 'CC',  '1020437727', 'CÉSAR GARCÍA GARCÍA');
 INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201113092101', 'CC',  '1020437727', 'ROBERTO GONZÁLEZ SUÁREZ');
 INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('200910361101', 'CC',  '1020448185', 'KEVIN MUÑOZ VÉLEZ');
-INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201810040010', 'CC',  '1020448185', 'DANIEL SUÁREZ MEJÍA');
+-- Dato de Prueba
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201810040010', 'CC',  '1020448185', 'VALERIA SUÁREZ MEJÍA');
 
 SELECT * FROM ART_Estudiante;
 
@@ -300,14 +305,18 @@ CREATE TABLE IF NOT EXISTS Extracurriculares (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
+INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201110046704');
+INSERT INTO Extracurriculares(empleado_becado, ART_Estudiante_est_codigo) VALUES (TRUE, '200510001101');
 INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201010006101');
-INSERT INTO Extracurriculares(empleado_becado, ART_Estudiante_est_codigo) VALUES (TRUE, '201110094201');
-INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201010040201');
-INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '200910361101');
-INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '200510001101');
-INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201224099101');
-INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201010040201');
-INSERT INTO Extracurriculares(ART_Estudiante_est_codigo) VALUES ('201010040201');
+INSERT INTO Extracurriculares(proyeccion_artistica, ART_Estudiante_est_codigo) VALUES (TRUE, '201010008101');
+INSERT INTO Extracurriculares(lider_semillero, ART_Estudiante_est_codigo) VALUES (TRUE, '201010040201');
+INSERT INTO Extracurriculares(deportista, ART_Estudiante_est_codigo) VALUES (TRUE, '201110033201');
+INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201110094201');
+INSERT INTO Extracurriculares(ART_Estudiante_est_codigo) VALUES ('201224099101');
+INSERT INTO Extracurriculares(representante_estu, ART_Estudiante_est_codigo) VALUES (TRUE, '201113092101');
+INSERT INTO Extracurriculares(ART_Estudiante_est_codigo) VALUES ('200910361101');
+--Dato de Prueba
+INSERT INTO Extracurriculares(deportista, ART_Estudiante_est_codigo) VALUES (TRUE, '201810040010');
 
 SELECT * FROM Extracurriculares;
 
@@ -323,9 +332,20 @@ CREATE TABLE IF NOT EXISTS ART_Materia_has_ART_Estudiante (
 	FOREIGN KEY (ART_Estudiante_est_codigo) REFERENCES ART_Estudiante (est_codigo)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-
-INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('ID0069', '201810040010');
+	
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('IF0004', '201110046704');
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('ID0069', '200510001101');
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('ST0254', '201010006101');
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('ID0069', '201010008101');
 INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('IF0004', '201010040201');
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('IF0004', '201110033201');
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('ST0253', '201110094201');
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('OG0276', '201224099101');
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('ST0253', '201113092101');
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('OG0276', '200910361101');
+
+--Dato de Prueba
+INSERT INTO ART_Materia_has_ART_Estudiante (ART_Materia_mat_codigo, ART_Estudiante_est_codigo) VALUES ('ID0069', '201810040010');
 
 SELECT * FROM ART_Materia_has_ART_Estudiante;
 
@@ -344,14 +364,15 @@ CREATE TABLE IF NOT EXISTS Eventos (
 	FOREIGN KEY (ART_Estudiante_est_codigo) REFERENCES ART_Estudiante (est_codigo)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-	
+
+--Dato de Prueba
 INSERT INTO Eventos (nombre_eventos,
 fecha_evento,
 lugar_evento,
 hora_evento,
 carrera_evento,
 duracion_evento,
-ART_Estudiante_est_codigo) VALUES ('CHARLA BIG DATA', '17/03/2020', 'AUDITORIO FUNDADORES', '3:00 PM', 'INGENIERÍA DE SISTEMAS', '2 HORAS', '201010040201');
+ART_Estudiante_est_codigo) VALUES ('CHARLA BIG DATA', '17/03/2020', 'AUDITORIO FUNDADORES', '3:00 PM', 'INGENIERÍA DE SISTEMAS', '2 HORAS', '201810040010');
 
 INSERT INTO Eventos (nombre_eventos,
 fecha_evento,
