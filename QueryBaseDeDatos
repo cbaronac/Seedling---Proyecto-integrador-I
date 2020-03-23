@@ -284,7 +284,7 @@ INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_co
 INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201113092101', 'CC',  '1020437727', 'ROBERTO GONZÁLEZ SUÁREZ');
 INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('200910361101', 'CC',  '1020448185', 'KEVIN MUÑOZ VÉLEZ');
 -- Dato de Prueba
-INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201810040010', 'CC',  '1020448185', 'VALERIA SUÁREZ MEJÍA');
+INSERT INTO ART_Estudiante (est_codigo, cli_tipodcto, cli_numdcto, cli_nombre_completo) VALUES ('201810040010', 'CC',  '1007253901', 'VALERIA SUÁREZ MEJÍA');
 
 SELECT * FROM ART_Estudiante;
 
@@ -324,7 +324,8 @@ SELECT * FROM Extracurriculares;
 -- Table `Seedling`.`ART_Materia_has_ART_Estudiante`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS ART_Materia_has_ART_Estudiante (
-  ART_Materia_mat_codigo VARCHAR(6) NOT NULL PRIMARY KEY,
+  numero serial PRIMARY KEY,
+  ART_Materia_mat_codigo VARCHAR(6) NOT NULL,
   ART_Estudiante_est_codigo VARCHAR(12) NOT NULL,
 	FOREIGN KEY (ART_Materia_mat_codigo) REFERENCES ART_Materia (mat_codigo)
     ON DELETE NO ACTION
